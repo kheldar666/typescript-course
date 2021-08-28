@@ -1,22 +1,19 @@
 import fs from "fs";
 
-export class CsvFileReader {
-  private _data: string[][] = [];
-
-  constructor(private filename: string) {
+export abstract class CsvFileReader<T> {
+  protected constructor(private filename: string) {
     this.read();
   }
 
-  read(): void {
-    this._data = fs
+  abstract mapRow(row: string[]): T;
+
+  read(): T[] {
+    return fs
       .readFileSync(this.filename, { encoding: "utf-8" })
       .split("\n")
       .map((row: string): string[] => {
         return row.split(",");
-      });
-  }
-
-  get data(): string[][] {
-    return this._data;
+      })
+      .map(this.mapRow);
   }
 }

@@ -1,3 +1,4 @@
+/// <reference types="@types/google.maps" />
 import Marker = google.maps.Marker;
 
 export interface Mappable {
@@ -22,7 +23,7 @@ export class CustomGoogleMap {
       };
     }
     this.googleMap = new google.maps.Map(
-      document.getElementById(divId),
+      document.getElementById(divId) as Element,
       options
     );
   }
