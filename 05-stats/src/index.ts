@@ -1,9 +1,18 @@
 import { MatchResultEnum } from "./MatchResultEnum";
-import { MatchReader } from "./MatchReader";
 
-const reader = new MatchReader("./football.csv");
-const matches = reader.read();
+// Using Generics
+// import { MatchReader } from "./inheritance/MatchReader";
+// const reader = new MatchReader("./football.csv");
+// const matches = reader.read();
+// Using interfaces
+import { CsvFileReader } from "./interface/CsvFileReader";
+import { MatchReader } from "./interface/MatchReader";
 
+const matchReader = new MatchReader(new CsvFileReader("./football.csv"));
+matchReader.load();
+const matches = matchReader.data;
+
+// Analysis
 let manUnitedWins = 0;
 console.log(matches);
 for (let match of matches) {

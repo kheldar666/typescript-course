@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export abstract class CsvFileReader<T> {
-  protected constructor(private filename: string) {
+  constructor(private filename: string) {
     this.read();
   }
 
