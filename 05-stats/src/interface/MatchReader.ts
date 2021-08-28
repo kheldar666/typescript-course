@@ -4,12 +4,12 @@ import { dateStringToDate } from "../utils";
 import { MatchResultEnum } from "../MatchResultEnum";
 
 export class MatchReader {
-  public data: MatchTuple[] = [];
+  public matches: MatchTuple[] = [];
   constructor(private reader: DataReader) {}
 
   load(): void {
     this.reader.read();
-    this.data = this.reader.data.map((row: string[]): MatchTuple => {
+    this.matches = this.reader.data.map((row: string[]): MatchTuple => {
       return [
         dateStringToDate(row[0]),
         row[1],

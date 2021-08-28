@@ -10,7 +10,7 @@ import { MatchReader } from "./interface/MatchReader";
 
 const matchReader = new MatchReader(new CsvFileReader("./football.csv"));
 matchReader.load();
-const matches = matchReader.data;
+const matches = matchReader.matches;
 
 // Analysis
 let manUnitedWins = 0;
