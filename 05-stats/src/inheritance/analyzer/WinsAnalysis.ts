@@ -1,6 +1,6 @@
 import { Analyzer } from "./Analyzer";
-import { MatchTuple } from "../types/MatchTuple";
-import { MatchResultEnum } from "../types/MatchResultEnum";
+import { MatchTuple } from "../../types/MatchTuple";
+import { MatchResultEnum } from "../../types/MatchResultEnum";
 
 export class WinsAnalysis implements Analyzer {
   constructor(private team: string) {}

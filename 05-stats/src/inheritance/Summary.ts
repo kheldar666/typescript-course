@@ -1,5 +1,5 @@
-import { Analyzer } from "./Analyzer";
-import { OutputTarget } from "./OutputTarget";
+import { Analyzer } from "./analyzer/Analyzer";
+import { OutputTarget } from "./outputs/OutputTarget";
 import { MatchTuple } from "../types/MatchTuple";
 
 export class Summary {

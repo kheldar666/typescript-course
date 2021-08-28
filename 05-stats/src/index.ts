@@ -6,16 +6,23 @@
 import { CsvFileReader } from "./composition/CsvFileReader";
 import { MatchReader } from "./composition/MatchReader";
 import { Summary } from "./inheritance/Summary";
-import { WinsAnalysis } from "./inheritance/WinsAnalysis";
-import { ConsoleReport } from "./inheritance/ConsoleReport";
+import { WinsAnalysis } from "./inheritance/analyzer/WinsAnalysis";
+import { ConsoleReport } from "./inheritance/outputs/ConsoleReport";
+import { HtmlReport } from "./inheritance/outputs/HtmlReport";
 
 const matchReader = new MatchReader(new CsvFileReader("./football.csv"));
 matchReader.load();
 const matches = matchReader.matches;
 
-const summary = new Summary(
+const consoleSummary = new Summary(
   new WinsAnalysis("Man United"),
   new ConsoleReport()
 );
 
-summary.buildAndPrintReport(matches);
+consoleSummary.buildAndPrintReport(matches);
+
+const htmlSummary = new Summary(
+  new WinsAnalysis("Man United"),
+  new HtmlReport()
+);
+htmlSummary.buildAndPrintReport(matches);
