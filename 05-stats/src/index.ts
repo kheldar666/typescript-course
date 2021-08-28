@@ -1,29 +1,21 @@
-import { MatchResultEnum } from "./MatchResultEnum";
-
-// Using Generics
+// Using Generics (Inheritance)
 // import { MatchReader } from "./inheritance/MatchReader";
 // const reader = new MatchReader("./football.csv");
 // const matches = reader.read();
-// Using interfaces
-import { CsvFileReader } from "./interface/CsvFileReader";
-import { MatchReader } from "./interface/MatchReader";
+// Using interfaces (Composition)
+import { CsvFileReader } from "./composition/CsvFileReader";
+import { MatchReader } from "./composition/MatchReader";
+import { Summary } from "./inheritance/Summary";
+import { WinsAnalysis } from "./inheritance/WinsAnalysis";
+import { ConsoleReport } from "./inheritance/ConsoleReport";
 
 const matchReader = new MatchReader(new CsvFileReader("./football.csv"));
 matchReader.load();
 const matches = matchReader.matches;
 
-// Analysis
-let manUnitedWins = 0;
-console.log(matches);
-for (let match of matches) {
-  if (match[1] === "Man United" && match[5] === MatchResultEnum.HomeWin) {
-    manUnitedWins++;
-  } else if (
-    match[2] === "Man United" &&
-    match[5] === MatchResultEnum.AwayWin
-  ) {
-    manUnitedWins++;
-  }
-}
+const summary = new Summary(
+  new WinsAnalysis("Man United"),
+  new ConsoleReport()
+);
 
-console.log(`Man United won ${manUnitedWins} games`);
+summary.buildAndPrintReport(matches);

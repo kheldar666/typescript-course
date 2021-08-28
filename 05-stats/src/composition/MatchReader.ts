@@ -1,7 +1,7 @@
 import { DataReader } from "./DataReader";
-import { MatchTuple } from "../MatchTuple";
-import { dateStringToDate } from "../utils";
-import { MatchResultEnum } from "../MatchResultEnum";
+import { MatchTuple } from "../types/MatchTuple";
+import { dateStringToDate } from "../utils/utils";
+import { MatchResultEnum } from "../types/MatchResultEnum";
 
 export class MatchReader {
   public matches: MatchTuple[] = [];
