@@ -1,10 +1,12 @@
 import { DataReader } from "./DataReader";
-import { MatchTuple } from "../types/MatchTuple";
-import { dateStringToDate } from "../utils/utils";
-import { MatchResultEnum } from "../types/MatchResultEnum";
+import { MatchTuple } from "../../types/MatchTuple";
+import { dateStringToDate } from "../../utils/utils";
+import { MatchResultEnum } from "../../types/MatchResultEnum";
+import { CsvFileReader } from "./CsvFileReader";
 
 export class MatchReader {
   public matches: MatchTuple[] = [];
+
   constructor(private reader: DataReader) {}
 
   load(): void {
@@ -20,5 +22,9 @@ export class MatchReader {
         row[6],
       ];
     });
+  }
+
+  static fromCsv(filename: string): MatchReader {
+    return new MatchReader(new CsvFileReader(filename));
   }
 }

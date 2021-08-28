@@ -3,22 +3,15 @@
 // const reader = new MatchReader("./football.csv");
 // const matches = reader.read();
 // Using interfaces (Composition)
-import { CsvFileReader } from "./composition/CsvFileReader";
-import { MatchReader } from "./composition/MatchReader";
+import { MatchReader } from "./composition/readers/MatchReader";
 import { Summary } from "./inheritance/Summary";
-import { WinsAnalysis } from "./inheritance/analyzer/WinsAnalysis";
-import { HtmlReport } from "./inheritance/outputs/HtmlReport";
 
-const matchReader = new MatchReader(new CsvFileReader("./football.csv"));
+const matchReader = MatchReader.fromCsv("./football.csv");
+const consoleSummary = Summary.winsAnalysisAndConsoleReport("Man United"); //Static method used
+const htmlSummary = Summary.winsAnalysisAndHtmlReport("Man United");
+
 matchReader.load();
 const matches = matchReader.matches;
 
-const consoleSummary = Summary.winsAnalysisAndConsoleReport("Man United"); //Static method used
-
 consoleSummary.buildAndPrintReport(matches);
-
-const htmlSummary = new Summary(
-  new WinsAnalysis("Man United"),
-  new HtmlReport()
-);
 htmlSummary.buildAndPrintReport(matches);

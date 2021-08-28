@@ -1,8 +1,9 @@
-import { Analyzer } from "./analyzer/Analyzer";
-import { OutputTarget } from "./outputs/OutputTarget";
+import { Analyzer } from "../composition/analyzer/Analyzer";
+import { OutputTarget } from "../composition/outputs/OutputTarget";
 import { MatchTuple } from "../types/MatchTuple";
-import { WinsAnalysis } from "./analyzer/WinsAnalysis";
-import { ConsoleReport } from "./outputs/ConsoleReport";
+import { WinsAnalysis } from "../composition/analyzer/WinsAnalysis";
+import { ConsoleReport } from "../composition/outputs/ConsoleReport";
+import { HtmlReport } from "../composition/outputs/HtmlReport";
 
 export class Summary {
   constructor(private analyzer: Analyzer, private outputTarget: OutputTarget) {}
@@ -14,5 +15,8 @@ export class Summary {
 
   static winsAnalysisAndConsoleReport(team: string): Summary {
     return new Summary(new WinsAnalysis(team), new ConsoleReport());
+  }
+  static winsAnalysisAndHtmlReport(team: string): Summary {
+    return new Summary(new WinsAnalysis(team), new HtmlReport());
   }
 }
