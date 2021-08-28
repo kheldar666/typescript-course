@@ -1,9 +1,9 @@
-import { Analyzer } from "../composition/analyzer/Analyzer";
-import { OutputTarget } from "../composition/outputs/OutputTarget";
+import { Analyzer } from "./analyzer/Analyzer";
+import { OutputTarget } from "./outputs/OutputTarget";
 import { MatchTuple } from "../types/MatchTuple";
-import { WinsAnalysis } from "../composition/analyzer/WinsAnalysis";
-import { ConsoleReport } from "../composition/outputs/ConsoleReport";
-import { HtmlReport } from "../composition/outputs/HtmlReport";
+import { WinsAnalysis } from "./analyzer/WinsAnalysis";
+import { ConsoleReport } from "./outputs/ConsoleReport";
+import { HtmlReport } from "./outputs/HtmlReport";
 
 export class Summary {
   constructor(private analyzer: Analyzer, private outputTarget: OutputTarget) {}
