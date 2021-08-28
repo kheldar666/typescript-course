@@ -8,6 +8,7 @@ export class MatchReader {
   constructor(private reader: DataReader) {}
 
   load(): void {
+    this.reader.read();
     this.data = this.reader.data.map((row: string[]): MatchTuple => {
       return [
         dateStringToDate(row[0]),
