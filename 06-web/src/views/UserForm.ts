@@ -1,42 +1,36 @@
-export class UserForm {
-  constructor(private parent: HTMLElement) {}
+import { View } from "./base/View";
+import { User } from "../models/User";
 
-  template(): string {
+export class UserForm extends View<User> {
+  template = (): string => {
     return `
             <div>
                 <h1>User Form</h1>
-                <input type="text">
-                <button>Click Me</button>
+                <div>User Name :${this.model.get("name")}</div>
+                <div>User Age :${this.model.get("age")}</div>
+                <input type="text" id="new-name" value="">
+                <button id="set-name">Set Name</button>
+                <button id="set-age">Random Age</button>
             </div>
         `;
-  }
-  render(): void {
-    const templateElement = document.createElement("template");
-    templateElement.innerHTML = this.template();
-    this.bindEvents(templateElement.content);
-    this.parent.append(templateElement.content);
-  }
+  };
 
-  onButtonClick() {
-    console.log("Yup! You clicked !");
-  }
-  onHoverH1() {
-    console.log("Hooo.. you are hovering");
-  }
-  eventsMap(): { [key: string]: () => void } {
+  eventsMap = (): { [key: string]: () => void } => {
     return {
-      "click:button": this.onButtonClick,
-      "mouseover:h1": this.onHoverH1,
+      "click:#set-age": this.onSetAgeClicked,
+      "click:#set-name": this.onSetNameClicked,
     };
-  }
+  };
 
-  bindEvents(fragment: DocumentFragment): void {
-    const eventsMaps = this.eventsMap();
-    for (let eventsKey in eventsMaps) {
-      const [eventName, selector] = eventsKey.split(":");
-      fragment.querySelectorAll(selector).forEach((element) => {
-        element.addEventListener(eventName, eventsMaps[eventsKey]);
-      });
+  onSetAgeClicked = (): void => {
+    this.model.setRandomAge();
+  };
+
+  onSetNameClicked = (): void => {
+    const inputNewName = document.getElementById("new-name");
+    if (inputNewName) {
+      const newName = (inputNewName as HTMLInputElement).value;
+      this.model.set({ name: newName });
     }
-  }
+  };
 }
