@@ -62,6 +62,29 @@ export abstract class Model<T extends Identity>
   // }
 
   // Much shorter version
+  // Can ONLY be used if the properties are NOT assigned in the constructor body like this :
+  //  constructor(
+  //     private attributes: ModelAttributes<T>,
+  //     private sync: ApiSync<T>,
+  //     private eventing: Eventing
+  //   ) {}
+  //
+  // BUT
+  //
+  // the following would lead to 'undefined' (due the order of code execution) :
+  //  private attributes: ModelAttributes<T>
+  //  private sync: ApiSync<T>
+  //  private eventing: Eventing
+  //  constructor(
+  //     attributes: ModelAttributes<T>,
+  //     sync: ApiSync<T>,
+  //     eventing: Eventing
+  //   ) {
+  //      this.attributes = attributes
+  //      this.sync = async
+  //      this.eventing = eventing
+  //   }
+
   get = this.attributes.get;
   getAll = this.attributes.getAll;
   on = this.eventing.on;
