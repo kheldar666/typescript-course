@@ -11,8 +11,8 @@ export interface UserProps extends Identity {
 }
 
 export class User extends Model<UserProps> {
-  constructor(data: UserProps) {
-    super(
+  static buildUser(data: UserProps) {
+    return new User(
       new ModelAttributes<UserProps>(data),
       new ApiSync<UserProps>(JSON_SERVER_URL),
       new Eventing()

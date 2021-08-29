@@ -10,7 +10,7 @@ const JSON_SERVER_URL = "http://localhost:3000";
 //   console.log(user.name);
 // });
 
-let user = new User({ name: "Babar", age: 40 });
+let user = User.buildUser({ name: "Babar", age: 40 });
 user.on("change", () => {
   console.log("User's props just changed !");
 });
