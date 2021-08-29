@@ -10,10 +10,16 @@ const JSON_SERVER_URL = "http://localhost:3000";
 //   console.log(user.name);
 // });
 
-let user = new User({ name: "Babar" });
+let user = new User({ name: "Babar", age: 40 });
+// user.on("change", () => {
+//   console.log("User's props just changed !");
+// });
+// user.set({ name: "Casimir" });
+//
+// console.log(user.get("name"));
 
-user.save().then(() => {
-  user.set({ name: "Casimir" });
-  user.get("id");
-  user.save();
-});
+// user.save().then(() => {
+//   user.set({ name: "Casimir" });
+//   user.get("id");
+//   user.save();
+// });

@@ -22,8 +22,9 @@ export class User implements Events, Syncable, GetSetAttributes<UserProps> {
     return this.attributes.get;
   }
 
-  get set() {
-    return this.attributes.set;
+  set(update: UserProps): void {
+    this.attributes.set(update);
+    this.trigger("change");
   }
 
   fetch(): Promise<void> {
@@ -34,18 +35,25 @@ export class User implements Events, Syncable, GetSetAttributes<UserProps> {
         .then((response) => {
           this.set(response);
         })
-        .catch((err) => console.error(err));
+        .catch((err) => {
+          console.error(err);
+          this.trigger("error");
+        });
     }
-    return Promise.reject("Id undefined");
+    return Promise.reject("ID is undefined");
   }
 
   save(): Promise<void> {
     return this.sync
-      .save(this.attributes.getData())
+      .save(this.attributes.getAll())
       .then((response) => {
-        this.set(response);
+        this.attributes.set(response);
+        this.trigger("save");
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        console.error(err);
+        this.trigger("error");
+      });
   }
 
   get on() {

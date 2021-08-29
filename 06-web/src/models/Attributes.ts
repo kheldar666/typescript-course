@@ -14,11 +14,11 @@ export class Attributes<T> {
     throw new Error(`Property "${key}" undefined`);
   };
 
-  getData = (): T => {
-    return this.data;
-  };
-
   set = (update: T): void => {
     Object.assign(this.data, update);
+  };
+
+  getAll = (): T => {
+    return this.data;
   };
 }
