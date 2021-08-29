@@ -1,6 +1,8 @@
 import { Eventing, Events } from "../Eventing";
-import { ApiSync, Identity, Syncable } from "../ApiSync";
+import { ApiSync } from "../ApiSync";
 import { GetSetAttributes, ModelAttributes } from "./ModelAttributes";
+import { Identity } from "./Identity";
+import { Syncable } from "./Sync";
 
 export abstract class Model<T extends Identity>
   implements Events, Syncable, GetSetAttributes<T>
@@ -16,10 +18,10 @@ export abstract class Model<T extends Identity>
     this.trigger("change");
   }
 
-  fetch(): Promise<void> {
+  fetch(): void {
     const ID = this.get("id");
     if (ID) {
-      return this.sync
+      this.sync
         .fetch(ID)
         .then((response) => {
           this.set(response);
@@ -29,18 +31,17 @@ export abstract class Model<T extends Identity>
           this.trigger("error");
         });
     }
-    return Promise.reject("ID is undefined");
+    throw new Error("ID is undefined");
   }
 
-  save(): Promise<void> {
-    return this.sync
+  save(): void {
+    this.sync
       .save(this.attributes.getAll())
       .then((response) => {
         this.attributes.set(response);
         this.trigger("save");
       })
       .catch((err) => {
-        console.error(err);
         this.trigger("error");
       });
   }
@@ -74,15 +75,13 @@ export abstract class Model<T extends Identity>
   // the following would lead to 'undefined' (due the order of code execution) :
   //  private attributes: ModelAttributes<T>
   //  private sync: ApiSync<T>
-  //  private eventing: Eventing
+  //  private eventing: Eventing = new Eventing()
   //  constructor(
   //     attributes: ModelAttributes<T>,
-  //     sync: ApiSync<T>,
-  //     eventing: Eventing
+  //     sync: ApiSync<T>
   //   ) {
   //      this.attributes = attributes
   //      this.sync = async
-  //      this.eventing = eventing
   //   }
 
   get = this.attributes.get;

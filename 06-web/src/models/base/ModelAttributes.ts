@@ -1,4 +1,4 @@
-import { Identity } from "../ApiSync";
+import { Identity } from "./Identity";
 
 export interface GetSetAttributes<T> {
   get<K extends keyof T>(key: K): T[K];

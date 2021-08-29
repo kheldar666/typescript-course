@@ -1,8 +1,8 @@
 import { Identity } from "./Identity";
 
 export interface Syncable {
-  fetch(): Promise<void>;
-  save(): Promise<void>;
+  fetch(): void;
+  save(): void;
 }
 
 export interface Sync<T extends Identity> {
