@@ -1,5 +1,4 @@
 import { Eventing, Events } from "./Eventing";
-import { Callback } from "./Types";
 import { Identity, Sync, Syncable } from "./Sync";
 import { Attributes, GetSetAttributes } from "./Attributes";
 
@@ -19,20 +18,25 @@ export class User implements Events, Syncable, GetSetAttributes<UserProps> {
     this.attributes = new Attributes<UserProps>(data);
   }
 
-  get(propName: string): any {
-    return this.attributes.get(propName);
+  get get() {
+    return this.attributes.get;
   }
-  set(update: UserProps): void {
-    this.attributes.set(update);
+
+  get set() {
+    return this.attributes.set;
   }
 
   fetch(): Promise<void> {
-    return this.sync
-      .fetch(this.attributes.get("id") as number)
-      .then((response) => {
-        this.attributes.set(response);
-      })
-      .catch((err) => console.error(err));
+    const userId = this.get("id");
+    if (userId) {
+      return this.sync
+        .fetch(userId)
+        .then((response) => {
+          this.set(response);
+        })
+        .catch((err) => console.error(err));
+    }
+    return Promise.reject("Id undefined");
   }
 
   save(): Promise<void> {
@@ -44,11 +48,11 @@ export class User implements Events, Syncable, GetSetAttributes<UserProps> {
       .catch((err) => console.error(err));
   }
 
-  on(eventName: string, callback: Callback): void {
-    this.eventing.on(eventName, callback);
+  get on() {
+    return this.eventing.on;
   }
 
-  trigger(eventName: string): void {
-    this.eventing.trigger(eventName);
+  get trigger() {
+    return this.eventing.trigger;
   }
 }

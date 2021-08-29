@@ -14,5 +14,6 @@ let user = new User({ name: "Babar" });
 
 user.save().then(() => {
   user.set({ name: "Casimir" });
+  user.get("id");
   user.save();
 });
