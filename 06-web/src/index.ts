@@ -11,15 +11,22 @@ const JSON_SERVER_URL = "http://localhost:3000";
 // });
 
 let user = new User({ name: "Babar", age: 40 });
-// user.on("change", () => {
-//   console.log("User's props just changed !");
-// });
-// user.set({ name: "Casimir" });
-//
-// console.log(user.get("name"));
+user.on("change", () => {
+  console.log("User's props just changed !");
+});
+user.on("save", () => {
+  console.log("User attributes were saved in the Database !");
+});
 
-// user.save().then(() => {
-//   user.set({ name: "Casimir" });
-//   user.get("id");
-//   user.save();
-// });
+user.on("error", () => {
+  console.log("Oops ! Something went wrong.");
+});
+user.set({ name: "Casimir" });
+
+console.log(user.get("name"));
+
+user.save().then(() => {
+  user.set({ name: "Casimir" });
+  user.get("id");
+  user.save();
+});
