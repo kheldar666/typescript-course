@@ -11,14 +11,6 @@ export abstract class Model<T extends Identity>
     private eventing: Eventing
   ) {}
 
-  get get() {
-    return this.attributes.get;
-  }
-
-  get getAll() {
-    return this.attributes.getAll;
-  }
-
   set(update: T): void {
     this.attributes.set(update);
     this.trigger("change");
@@ -53,11 +45,25 @@ export abstract class Model<T extends Identity>
       });
   }
 
-  get on() {
-    return this.eventing.on;
-  }
+  // get get() {
+  //   return this.attributes.get;
+  // }
+  //
+  // get getAll() {
+  //   return this.attributes.getAll;
+  // }
+  //
+  // get on() {
+  //   return this.eventing.on;
+  // }
+  //
+  // get trigger() {
+  //   return this.eventing.trigger;
+  // }
 
-  get trigger() {
-    return this.eventing.trigger;
-  }
+  // Much shorter version
+  get = this.attributes.get;
+  getAll = this.attributes.getAll;
+  on = this.eventing.on;
+  trigger = this.eventing.trigger;
 }
