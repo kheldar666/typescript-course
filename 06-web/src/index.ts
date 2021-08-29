@@ -10,13 +10,9 @@ const JSON_SERVER_URL = "http://localhost:3000";
 //   console.log(user.name);
 // });
 
-let user = new User({ id: 32 });
-
-user.fetch().then(() => {
-  console.log(user);
-});
+let user = new User({ name: "Babar" });
 
 user.save().then(() => {
-  user.set({ name: "Babar" });
+  user.set({ name: "Casimir" });
   user.save();
 });

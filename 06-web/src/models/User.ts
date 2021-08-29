@@ -13,7 +13,11 @@ export class User implements Events {
   constructor(private data: UserProps) {}
 
   get(propName: string): string | number {
-    return this.data[propName as keyof UserProps];
+    const value = this.data[propName as keyof UserProps];
+    if (value) {
+      return value;
+    }
+    throw new Error("Invalid Property Name");
   }
 
   set(update: UserProps): void {
@@ -31,7 +35,7 @@ export class User implements Events {
 
   save(): Promise<void> {
     return this.sync
-      .save(this.get("id") as number, this.data)
+      .save(this.data)
       .then((response) => {
         this.set(response);
       })

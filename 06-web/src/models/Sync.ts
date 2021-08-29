@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
+import { Identity } from "../interfaces/Identity";
 
-export class Sync<T> {
+export class Sync<T extends Identity> {
   constructor(private baseUrl: string) {}
 
   fetch(id: number): Promise<T> {
@@ -14,9 +15,9 @@ export class Sync<T> {
       });
   }
 
-  save(id: number, data: T): Promise<T> {
+  save(data: T): Promise<T> {
+    const { id } = data;
     if (!id) {
-      console.log("Going to POST");
       return axios
         .post(this.baseUrl, data)
         .then((response: AxiosResponse) => {
@@ -26,7 +27,6 @@ export class Sync<T> {
           return Promise.reject<T>(err);
         });
     } else {
-      console.log("Going to PUT");
       return axios
         .put(this.baseUrl + "/" + id, data)
         .then((response: AxiosResponse) => {

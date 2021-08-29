@@ -1,5 +1,6 @@
-export interface UserProps {
-  id?: number;
+import { Identity } from "./Identity";
+
+export interface UserProps extends Identity {
   name?: string;
   age?: number;
 }
