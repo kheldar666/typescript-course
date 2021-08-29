@@ -1,18 +1,6 @@
 import axios, { AxiosResponse } from "axios";
-
-export interface Identity {
-  id?: number;
-}
-
-export interface Syncable {
-  fetch(): Promise<void>;
-  save(): Promise<void>;
-}
-
-export interface Sync<T extends Identity> {
-  fetch(id: number): Promise<T>;
-  save(data: T): Promise<T>;
-}
+import { Identity } from "./base/Identity";
+import { Sync } from "./base/Sync";
 
 export class ApiSync<T extends Identity> implements Sync<T> {
   constructor(private baseUrl: string) {}

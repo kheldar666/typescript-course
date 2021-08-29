@@ -1,4 +1,4 @@
-import { Callback } from "./Types";
+import { Callback } from "./types/Types";
 
 export interface Events {
   on(eventName: string, callback: Callback): void;

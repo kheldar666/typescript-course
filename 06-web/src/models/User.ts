@@ -1,7 +1,7 @@
 import { ApiSync, Identity } from "./ApiSync";
 import { Model } from "./base/Model";
 import { Eventing } from "./Eventing";
-import { ModelAttributes } from "./ModelAttributes";
+import { ModelAttributes } from "./base/ModelAttributes";
 
 const JSON_SERVER_URL = "http://localhost:3000/users";
 

@@ -1,6 +1,6 @@
 import { Eventing, Events } from "../Eventing";
 import { ApiSync, Identity, Syncable } from "../ApiSync";
-import { GetSetAttributes, ModelAttributes } from "../ModelAttributes";
+import { GetSetAttributes, ModelAttributes } from "./ModelAttributes";
 
 export abstract class Model<T extends Identity>
   implements Events, Syncable, GetSetAttributes<T>
