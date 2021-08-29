@@ -1,41 +1,43 @@
-import { Events } from "../interfaces/Events";
-import { UserProps } from "../interfaces/UserProps";
-import { Eventing } from "./Eventing";
+import { Eventing, Events } from "./Eventing";
 import { Callback } from "./Types";
-import { Sync } from "./Sync";
+import { Identity, Sync, Syncable } from "./Sync";
+import { Attributes, GetSetAttributes } from "./Attributes";
 
 const JSON_SERVER_URL = "http://localhost:3000/users";
 
-export class User implements Events {
+export interface UserProps extends Identity {
+  name?: string;
+  age?: number;
+}
+
+export class User implements Events, Syncable, GetSetAttributes<UserProps> {
   private eventing: Eventing = new Eventing();
   private sync: Sync<UserProps> = new Sync<UserProps>(JSON_SERVER_URL);
+  private attributes: Attributes<UserProps>;
 
-  constructor(private data: UserProps) {}
-
-  get(propName: string): string | number {
-    const value = this.data[propName as keyof UserProps];
-    if (value) {
-      return value;
-    }
-    throw new Error("Invalid Property Name");
+  constructor(data: UserProps) {
+    this.attributes = new Attributes<UserProps>(data);
   }
 
+  get(propName: string): any {
+    return this.attributes.get(propName);
+  }
   set(update: UserProps): void {
-    Object.assign(this.data, update);
+    this.attributes.set(update);
   }
 
   fetch(): Promise<void> {
     return this.sync
-      .fetch(this.get("id") as number)
+      .fetch(this.attributes.get("id") as number)
       .then((response) => {
-        this.set(response);
+        this.attributes.set(response);
       })
       .catch((err) => console.error(err));
   }
 
   save(): Promise<void> {
     return this.sync
-      .save(this.data)
+      .save(this.attributes.getData())
       .then((response) => {
         this.set(response);
       })

@@ -1,5 +1,13 @@
 import axios, { AxiosResponse } from "axios";
-import { Identity } from "../interfaces/Identity";
+
+export interface Identity {
+  id?: number;
+}
+
+export interface Syncable {
+  fetch(): Promise<void>;
+  save(): Promise<void>;
+}
 
 export class Sync<T extends Identity> {
   constructor(private baseUrl: string) {}
