@@ -1,6 +1,6 @@
 import { Callback } from "./Types";
 
-export abstract class Eventing {
+export class Eventing {
   private events: { [key: string]: Callback[] } = {};
 
   on(eventName: string, callback: Callback): void {

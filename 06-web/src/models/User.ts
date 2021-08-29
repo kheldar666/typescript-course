@@ -1,18 +1,15 @@
 import axios, { AxiosResponse } from "axios";
+import { Events } from "../interfaces/Events";
+import { UserProps } from "../interfaces/UserProps";
 import { Eventing } from "./Eventing";
+import { Callback } from "./Types";
 
 const JSON_SERVER_URL = "http://localhost:3000/users";
 
-export interface UserProps {
-  id?: number;
-  name?: string;
-  age?: number;
-}
+export class User implements Events {
+  private eventing: Eventing = new Eventing();
 
-export class User extends Eventing {
-  constructor(private data: UserProps) {
-    super();
-  }
+  constructor(private data: UserProps) {}
 
   get(propName: string): string | number {
     return this.data[propName as keyof UserProps];
@@ -46,5 +43,13 @@ export class User extends Eventing {
         .then((response: AxiosResponse) => console.log("User updated"))
         .catch((err) => console.error(err));
     }
+  }
+
+  on(eventName: string, callback: Callback): void {
+    this.eventing.on(eventName, callback);
+  }
+
+  trigger(eventName: string): void {
+    this.eventing.trigger(eventName);
   }
 }
