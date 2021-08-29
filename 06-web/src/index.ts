@@ -1,19 +1,22 @@
 import { User } from "./models/User";
 
-const user = new User({ name: "Martin", age: 46 });
+const JSON_SERVER_URL = "http://localhost:3000";
 
-user.on("change", () => {
-  console.log("Event #1 triggered");
+//const user = new User({ name: "Martin", age: 46 });
+
+//axios.post(JSON_SERVER_URL + "/users", { name: "Martin", age: 46 });
+// axios.get(JSON_SERVER_URL + "/users/1").then((response) => {
+//   const user = response.data as UserProps;
+//   console.log(user.name);
+// });
+
+let user = new User({ id: 32 });
+
+user.fetch().then(() => {
+  console.log(user);
 });
 
-user.on("change", () => {
-  console.log("Event #2 triggered");
+user.save().then(() => {
+  user.set({ name: "Babar" });
+  user.save();
 });
-
-user.on("save", () => {
-  console.log("Save Event #1 triggered");
-});
-
-user.trigger("change");
-user.trigger("save");
-console.log(user);
