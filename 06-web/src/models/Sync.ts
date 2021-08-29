@@ -12,7 +12,7 @@ export interface Syncable {
 export class Sync<T extends Identity> {
   constructor(private baseUrl: string) {}
 
-  fetch(id: number): Promise<T> {
+  fetch = (id: number): Promise<T> => {
     return axios
       .get(this.baseUrl + "/" + id)
       .then((response: AxiosResponse) => {
@@ -21,9 +21,9 @@ export class Sync<T extends Identity> {
       .catch((err) => {
         return Promise.reject<T>(err);
       });
-  }
+  };
 
-  save(data: T): Promise<T> {
+  save = (data: T): Promise<T> => {
     const { id } = data;
     if (!id) {
       return axios
@@ -44,5 +44,5 @@ export class Sync<T extends Identity> {
           return Promise.reject<T>(err);
         });
     }
-  }
+  };
 }
