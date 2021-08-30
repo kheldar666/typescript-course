@@ -1,8 +1,14 @@
-import { Eventing } from "../Eventing";
+import { Eventing, Events } from "../Eventing";
 import axios, { AxiosResponse } from "axios";
 
-export class Collection<T, K> {
-  private models: T[] = [];
+export interface Collection<T> {
+  fetchAll(): void;
+  length: number;
+  models: T[];
+}
+
+export class ModelCollection<T, K> implements Events, Collection<T> {
+  private _models: T[] = [];
   private events: Eventing = new Eventing();
 
   constructor(private baseUrl: string, private deserialize: (json: K) => T) {}
@@ -15,13 +21,21 @@ export class Collection<T, K> {
     return this.events.trigger;
   }
 
-  fetchAll(): void {
+  get models() {
+    return this._models;
+  }
+
+  fetchAll = (): void => {
     axios.get(this.baseUrl).then((response: AxiosResponse) => {
       const data = response.data;
       data.forEach((value: K) => {
-        this.models.push(this.deserialize(value));
+        this._models.push(this.deserialize(value));
       });
       this.trigger("change");
     });
+  };
+
+  get length() {
+    return this._models.length;
   }
 }

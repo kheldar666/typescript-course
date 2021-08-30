@@ -1,13 +1,21 @@
 import { Events } from "../../models/Eventing";
 
 export abstract class View<T extends Events> {
+  regions: { [key: string]: Element } = {};
+
   constructor(private _parent: Element, private _model: T) {
     this.bindModel();
   }
 
   abstract template(): string;
 
-  abstract eventsMap(): { [key: string]: () => void };
+  regionsMap(): { [key: string]: string } {
+    return {};
+  }
+
+  eventsMap(): { [key: string]: () => void } {
+    return {};
+  }
 
   get model(): T {
     return this._model;
@@ -19,11 +27,28 @@ export abstract class View<T extends Events> {
     });
   }
 
+  mapRegions(fragment: DocumentFragment): void {
+    const regionsMap = this.regionsMap();
+    for (let key in regionsMap) {
+      const selector = regionsMap[key];
+      const element = fragment.querySelector(selector);
+      if (element) {
+        this.regions[key] = element;
+      }
+    }
+  }
+
+  onRender(): void {}
+
   render = (): void => {
-    this._parent.innerHTML = "";
     const templateElement = document.createElement("template");
     templateElement.innerHTML = this.template();
+
     this.bindEvents(templateElement.content);
+    this.mapRegions(templateElement.content);
+
+    this.onRender();
+
     this._parent.append(templateElement.content);
   };
 

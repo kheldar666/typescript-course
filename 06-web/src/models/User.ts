@@ -3,7 +3,7 @@ import { Model } from "./base/Model";
 import { Eventing } from "./Eventing";
 import { ModelAttributes } from "./base/ModelAttributes";
 import { Identity } from "./base/Identity";
-import { Collection } from "./base/Collection";
+import { ModelCollection } from "./base/ModelCollection";
 
 const JSON_SERVER_URL = "http://localhost:3000/users";
 
@@ -21,8 +21,11 @@ export class User extends Model<UserProps> {
     );
   }
 
-  static buildCollection(): Collection<User, UserProps> {
-    return new Collection<User, UserProps>(JSON_SERVER_URL, User.buildUser);
+  static buildCollection(): ModelCollection<User, UserProps> {
+    return new ModelCollection<User, UserProps>(
+      JSON_SERVER_URL,
+      User.buildUser
+    );
   }
 
   setRandomAge(): void {
