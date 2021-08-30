@@ -15,8 +15,8 @@ const myNumbers: number[] = [1, 2, 2, 4, 5];
 const truths: boolean[] = [true, false, false, true];
 
 //Classes
-class Car {}
-const car: Car = new Car();
+class Voiture {}
+const voiture: Voiture = new Voiture();
 
 //Object literal
 const point: { x: number; y: number } = {

@@ -17,8 +17,8 @@ class Car extends Vehicle {
   }
 }
 
-const car = new Car("red");
+const aCar = new Car("red");
 
-car.drive();
-car.honk();
-console.log(car.getColor());
+aCar.drive();
+aCar.honk();
+console.log(aCar.getColor());

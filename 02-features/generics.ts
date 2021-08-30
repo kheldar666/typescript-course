@@ -23,9 +23,9 @@ interface Printable {
   print(): void;
 }
 
-class Car implements Printable {
+class Truck implements Printable {
   print() {
-    console.log("I am a car");
+    console.log("I am a truck");
   }
 }
 
@@ -42,5 +42,5 @@ function printHousesOrCars<T extends Printable>(arr: T[]): void {
 }
 
 printHousesOrCars<House>([new House(), new House()]);
-printHousesOrCars<Car>([new Car(), new Car()]);
-printHousesOrCars<Printable>([new House(), new Car()]);
+printHousesOrCars<Truck>([new Truck(), new Truck()]);
+printHousesOrCars<Printable>([new House(), new Truck()]);
