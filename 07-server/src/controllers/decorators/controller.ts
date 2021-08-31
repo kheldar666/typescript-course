@@ -1,5 +1,7 @@
 import "reflect-metadata";
 import { AppRouter } from "../../AppRouter";
+import { Methods } from "./Methods";
+import { MetadataKeys } from "./MetadataKeys";
 
 export function controller(prefix: string) {
   // the argument here will be the constructor
@@ -7,16 +9,19 @@ export function controller(prefix: string) {
     const router = AppRouter.getInstance();
     for (const prototypeKey in target.prototype) {
       const routeHandler = target.prototype[prototypeKey];
-      const path = Reflect.getMetadata("path", target.prototype, prototypeKey);
-      const method = Reflect.getMetadata(
-        "method",
+      const path = Reflect.getMetadata(
+        MetadataKeys.Path,
+        target.prototype,
+        prototypeKey
+      );
+      const method: Methods = Reflect.getMetadata(
+        MetadataKeys.Method,
         target.prototype,
         prototypeKey
       );
 
       if (path && method) {
-        if (method === "get") router.get(`${prefix}${path}`, routeHandler);
-        if (method === "post") router.post(`${prefix}${path}`, routeHandler);
+        router[method](`${prefix}${path}`, routeHandler);
       }
     }
   };
