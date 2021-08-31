@@ -1,10 +1,10 @@
 import "reflect-metadata";
 
-@printMetadata
+@controller
 class Plane {
   color: "red";
 
-  @markFunction("My Secret")
+  @get("My Secret")
   fly(): void {
     console.log("Taking off");
   }
@@ -14,20 +14,24 @@ class Plane {
   }
 }
 
-function markFunction(secretInfo: string) {
+function get(path: string) {
   return function (target: Plane, key: string) {
-    Reflect.defineMetadata("secret", secretInfo, target, key);
+    Reflect.defineMetadata("path", path, target, key);
   };
 }
 
-function printMetadata(target: typeof Plane) {
+function controller(target: typeof Plane) {
   for (const key in target.prototype) {
     //key here are the functions of Plane, not property like "color"
-    const secret = Reflect.getMetadata("secret", target.prototype, key);
-    if (secret) {
-      console.log(`Secret metadata for key "${key}" is "${secret}"`);
+    const path = Reflect.getMetadata("path", target.prototype, key);
+    const middleware = Reflect.getMetadata("middleware", target.prototype, key);
+
+    if (path) {
+      console.log(`Path metadata for key "${key}" is "${path}"`);
     } else {
-      console.log(`No Secret metadata for key (ie:function): ${key}`);
+      console.log(`No Path metadata for key (ie:function): ${key}`);
     }
+
+    // router.get(path, middleware, target.prototype[key]
   }
 }
