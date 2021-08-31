@@ -2,6 +2,22 @@ import "reflect-metadata";
 import { AppRouter } from "../../AppRouter";
 import { Methods } from "./Methods";
 import { MetadataKeys } from "./MetadataKeys";
+import { NextFunction, Request, RequestHandler, Response } from "express";
+
+function bodyValidators(keys: string[]): RequestHandler {
+  return function (req: Request, res: Response, next: NextFunction): void {
+    if (!req.body) {
+      throw new Error("The request does not have any body property");
+    }
+
+    for (let key of keys) {
+      if (!req.body[key]) {
+        throw new Error(`Missing body property "${key}" in the request`);
+      }
+    }
+    next();
+  };
+}
 
 export function controller(prefix: string) {
   // the argument here will be the constructor
@@ -29,8 +45,20 @@ export function controller(prefix: string) {
           prototypeKey
         ) || [];
 
+      const validators =
+        Reflect.getMetadata(
+          MetadataKeys.VALIDATOR,
+          target.prototype,
+          prototypeKey
+        ) || [];
+
       if (path && method) {
-        router[method](`${prefix}${path}`, ...middlewares, routeHandler);
+        router[method](
+          `${prefix}${path}`,
+          middlewares,
+          bodyValidators(validators),
+          routeHandler
+        );
       }
     }
   };
