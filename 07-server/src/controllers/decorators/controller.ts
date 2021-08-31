@@ -9,19 +9,28 @@ export function controller(prefix: string) {
     const router = AppRouter.getInstance();
     for (const prototypeKey in target.prototype) {
       const routeHandler = target.prototype[prototypeKey];
+
       const path = Reflect.getMetadata(
-        MetadataKeys.Path,
-        target.prototype,
-        prototypeKey
-      );
-      const method: Methods = Reflect.getMetadata(
-        MetadataKeys.Method,
+        MetadataKeys.PATH,
         target.prototype,
         prototypeKey
       );
 
+      const method: Methods = Reflect.getMetadata(
+        MetadataKeys.METHOD,
+        target.prototype,
+        prototypeKey
+      );
+
+      const middlewares =
+        Reflect.getMetadata(
+          MetadataKeys.MIDDLEWARE,
+          target.prototype,
+          prototypeKey
+        ) || [];
+
       if (path && method) {
-        router[method](`${prefix}${path}`, routeHandler);
+        router[method](`${prefix}${path}`, ...middlewares, routeHandler);
       }
     }
   };
